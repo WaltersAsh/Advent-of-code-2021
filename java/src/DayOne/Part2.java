@@ -15,43 +15,31 @@ public class Part2 {
     this.inputs = inputs;
   }
 
-  public List<List<Integer>> splitSlidingWindows() {
-    List<List<Integer>> windows = new ArrayList<>();
+  public List<Integer> gatherSums() {
+    List<Integer> sums = new ArrayList<>();
     for (int i = 2; i < inputs.size(); i++) {
-      List<Integer> list = new ArrayList<>();
-      list.add(inputs.get(i - 2));
-      list.add(inputs.get(i - 1));
-      list.add(inputs.get(i));
-      windows.add(list);
+      sums.add(inputs.get(i - 2) + inputs.get(i - 1) + inputs.get(i));
     }
-    System.out.println("wub");
-    System.out.println(Arrays.toString(windows.toArray()));
-    return windows;
+    return sums;
   }
 
   public void process() {
-    List<Integer> derivedInputs = new ArrayList<>();
 
-    //sum windows
-    for (List<Integer> list : splitSlidingWindows()) {
-      int sum = list.stream().reduce(0, Integer::sum);
-      derivedInputs.add(sum);
-    }
-
+    List<Integer> sums = gatherSums();
     int inc = 0;
     int dec = 0;
     int na = 0;
 
-    System.out.println(derivedInputs.get(0) + " (N/A - no previous measurement)");
-    for (int i = 1; i < derivedInputs.size(); i++) {
-      if (derivedInputs.get(i) > derivedInputs.get(i - 1)) {
+    System.out.println(sums.get(0) + " (N/A - no previous measurement)");
+    for (int i = 1; i < sums.size(); i++) {
+      if (sums.get(i) > sums.get(i - 1)) {
         inc++;
-        System.out.println(derivedInputs.get(i) + " (increased)");
-      } else if (derivedInputs.get(i) < derivedInputs.get(i - 1)) {
-        System.out.println(derivedInputs.get(i) + " (decreased)");
+        System.out.println(sums.get(i) + " (increased)");
+      } else if (sums.get(i) < sums.get(i - 1)) {
+        System.out.println(sums.get(i) + " (decreased)");
         dec++;
       } else {
-        System.out.println(derivedInputs.get(i) + " (no change)");
+        System.out.println(sums.get(i) + " (no change)");
         na++;
       }
     }

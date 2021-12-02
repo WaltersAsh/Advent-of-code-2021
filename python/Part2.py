@@ -8,21 +8,26 @@ def read_inputs():
 
 
 def process(inputs):
+    sums = []
+    for i in range(2, len(inputs)):
+        tot = int(inputs[i - 2]) + int(inputs[i - 1]) + int(inputs[i])
+        sums.append(tot)
+
     inc = 0
     dec = 0
     na = 0
 
-    print(inputs[0], "(N/A - no previous measurement)")
-    for i in range(1, len(inputs)):
-        if inputs[i] > inputs[i - 1]:
+    print(sums[0], "(N/A - no previous measurement)")
+    for i in range(1, len(sums)):
+        if sums[i] > sums[i - 1]:
             inc += 1
-            print(inputs[i], " (increased)")
-        elif inputs[i] < inputs[i - 1]:
+            print(sums[i], " (increased)")
+        elif sums[i] < sums[i - 1]:
             dec += 1
-            print(inputs[i], " (decreased)")
+            print(sums[i], " (decreased)")
         else:
             na += 1
-            print(inputs[i], " (no change)")
+            print(sums[i], " (no change)")
 
     print("\nNumber of increased measurements: ", inc)
     print("Number of decreased measurements: ", dec)
