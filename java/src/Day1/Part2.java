@@ -1,36 +1,45 @@
-package DayOne;
+package Day1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class Part1 {
+public class Part2 {
 
   private List<Integer> inputs;
 
-  public Part1(List<Integer> inputs) {
+  public Part2(List<Integer> inputs) {
     this.inputs = inputs;
   }
 
+  public List<Integer> gatherSums() {
+    List<Integer> sums = new ArrayList<>();
+    for (int i = 2; i < inputs.size(); i++) {
+      sums.add(inputs.get(i - 2) + inputs.get(i - 1) + inputs.get(i));
+    }
+    return sums;
+  }
+
   public void process() {
+
+    List<Integer> sums = gatherSums();
     int inc = 0;
     int dec = 0;
     int na = 0;
 
-    System.out.println(inputs.get(0) + " (N/A - no previous measurement)");
-    for (int i = 1; i < inputs.size(); i++) {
-      if (inputs.get(i) > inputs.get(i - 1)) {
+    System.out.println(sums.get(0) + " (N/A - no previous measurement)");
+    for (int i = 1; i < sums.size(); i++) {
+      if (sums.get(i) > sums.get(i - 1)) {
         inc++;
-        System.out.println(inputs.get(i) + " (increased)");
-      } else if (inputs.get(i) < inputs.get(i - 1)) {
-        System.out.println(inputs.get(i) + " (decreased)");
+        System.out.println(sums.get(i) + " (increased)");
+      } else if (sums.get(i) < sums.get(i - 1)) {
+        System.out.println(sums.get(i) + " (decreased)");
         dec++;
       } else {
-        System.out.println(inputs.get(i) + " (no change)");
+        System.out.println(sums.get(i) + " (no change)");
         na++;
       }
     }
@@ -49,16 +58,15 @@ public class Part1 {
     return inputs;
   }
 
-  public static void main(String[] args) throws IOException {
+
+  public static void main(String[] args) throws FileNotFoundException {
     List<Integer> testInputs = Arrays.asList(199, 200, 208, 210, 200, 207, 240, 269, 260, 263);
-    Part1 test = new Part1(testInputs);
+    Part2 test = new Part2(testInputs);
     test.process();
 
     System.out.println("------------------------------------------------------------------------");
-    Part1 chall = new Part1(readInputs());
+    Part2 chall = new Part2(readInputs());
     chall.process();
   }
+
 }
-
-
-

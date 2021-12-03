@@ -1,15 +1,12 @@
-package DayTwo;
+package Day2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Part2 {
 
   public static void main(String[] args) throws FileNotFoundException {
-    List<String> inputs = new ArrayList<>();
     File file = new File("inputs/day-two-input.txt");
     Scanner sc = new Scanner(file);
 
