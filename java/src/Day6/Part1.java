@@ -57,8 +57,8 @@ public class Part1 {
 
   public static void main(String[] args) throws IOException {
     Part1 chall = new Part1();
-    //chall.readData();
-    chall.test();
+    chall.readData();
+    //chall.test();
     chall.process();
   }
 
