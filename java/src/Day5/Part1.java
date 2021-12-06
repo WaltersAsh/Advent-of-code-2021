@@ -23,7 +23,9 @@ public class Part1 {
       Scanner sc = new Scanner(format);
       Point p1 = new Point(sc.nextInt(), sc.nextInt());
       Point p2 = new Point(sc.nextInt(), sc.nextInt());
-      List<Point> segment = Arrays.asList(p1, p2);
+      List<Point> segment = new ArrayList<>();
+      segment.add(p1);
+      segment.add(p2);
       segments.add(segment);
       sc.close();
     }
@@ -35,7 +37,6 @@ public class Part1 {
       Point p2 = segment.get(1);
       if (p1.x == p2.x || p1.y == p2.y) {
         temp.add(segment);
-        System.out.println(segment);
       }
     }
     segments = temp;
@@ -59,18 +60,41 @@ public class Part1 {
           segment.add(new Point(i, p1.y));
         }
       }
-      System.out.println(segment);
+    }
+  }
+
+  public void plotPoints() {
+    for (List<Point> segment : segments) {
+      for (Point p : segment) {
+        if (plot[p.y][p.x] != 0) {
+          plot[p.y][p.x]++;
+        } else {
+          plot[p.y][p.x] = 1;
+        }
+      }
     }
   }
 
   public void process() {
-
+    int intercepts = 0;
+    for (int row = 0; row < plot.length; row++) {
+      for (int col = 0; col < plot[row].length; col++) {
+        if (plot[row][col] > 1) {
+          intercepts++;
+        }
+      }
+    }
+    System.out.println(Arrays.deepToString(plot).replace("], ", "]\n") + "\n");
+    System.out.println("Number of intercepting lines: " + intercepts);
   }
 
 
   public static void main(String[] args) throws IOException {
     Part1 chall = new Part1();
     chall.readData();
+    chall.findOtherPoints();
+    chall.plotPoints();
+    chall.process();
   }
 
   class Point {
@@ -84,10 +108,7 @@ public class Part1 {
 
     @Override
     public String toString() {
-      return "Point{" +
-              "x=" + x +
-              ", y=" + y +
-              '}';
+      return "(" + x + "," + y + ")";
     }
   }
 }
