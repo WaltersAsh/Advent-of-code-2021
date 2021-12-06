@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class Part1 {
+public class Part2 {
 
   private List<List<Point>> segments = new ArrayList<>();
   private int[][] plot = new int[1000][1000];
@@ -29,17 +29,6 @@ public class Part1 {
       segments.add(segment);
       sc.close();
     }
-
-    //strip non-horizontal and non-vertical segments
-    List<List<Point>> temp = new ArrayList<>();
-    for (List<Point> segment : segments) {
-      Point p1 = segment.get(0);
-      Point p2 = segment.get(1);
-      if (p1.x == p2.x || p1.y == p2.y) {
-        temp.add(segment);
-      }
-    }
-    segments = temp;
   }
 
   public void findOtherPoints() {
@@ -52,12 +41,20 @@ public class Part1 {
         for (int i = min + 1; i < max; i++) {
           segment.add(new Point(p1.x, i));
         }
-      }
-      if (p1.y == p2.y) { //vertical lines
+      } else if (p1.y == p2.y) { //vertical lines
         int min = Math.min(p1.x, p2.x);
         int max = Math.max(p1.x, p2.x);
         for (int i = min + 1; i < max; i++) {
           segment.add(new Point(i, p1.y));
+        }
+      } else { //diagonal lines
+        int m = (p2.y - p1.y) / (p2.x - p1.x);
+        int c1 = m * p1.x;
+        int c = c1 >= 0 ? p1.y - c1 : p1.y + Math.abs(c1);
+        int min = Math.min(p1.x, p2.x);
+        int max = Math.max(p1.x, p2.x);
+        for (int i = min + 1; i < max; i++) {
+          segment.add(new Point(i, m * i + c));
         }
       }
     }
@@ -90,7 +87,7 @@ public class Part1 {
 
 
   public static void main(String[] args) throws IOException {
-    Part1 chall = new Part1();
+    Part2 chall = new Part2();
     chall.readData();
     chall.findOtherPoints();
     chall.plotPoints();
@@ -112,3 +109,4 @@ public class Part1 {
     }
   }
 }
+
