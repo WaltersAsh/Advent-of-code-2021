@@ -43,31 +43,33 @@ public class Part2 {
   }
 
   public void process() {
+    System.out.println("Initial state: " + freq);
+
     for (int day = 0; day < days; day++) {
-      if (day != 0) {
-        System.out.println("After day " + day + ": " + freq);
-      } else {
-        System.out.println("Initial state: " + freq);
-      }
 
       Map<Integer, Integer> temp = new HashMap<>();
       for (int i = 0; i < 9; i++) {
         temp.put(i, 0);
       }
 
-      for (int timer : freq.keySet()) {
+     for (int timer : freq.keySet()) {
         if (timer == 0 && freq.get(0) != 0) {
-          temp.put(8, freq.get(8) + freq.get(0)); //new fish has a timer of 8
-          temp.put(6, freq.get(6) + freq.get(0)); //fish with a timer of 0 goes to 6
+          temp.put(8, temp.get(8) + freq.get(0)); //new fish has a timer of 8
+          temp.put(6, temp.get(6) + freq.get(0)); //fish with a timer of 0 goes to 6
           temp.put(0, 0); //fish with a timer of 0, gets removed from 0
-          //not supposed to decrement until next day
+          freq.put(0, 0);
+          //not supposed to decrement existing 0 (now 6) and new (now 8) until next day
         }
         if (timer != 0 && freq.get(timer) != 0) { //remove from current timer by decrementing
+          freq.put(timer - 1, freq.get(timer - 1) + freq.get(timer));
+          freq.put(timer, 0);
           temp.put(timer - 1, freq.get(timer - 1) + freq.get(timer));
           temp.put(timer, 0);
         }
       }
+
       freq = temp;
+      System.out.println("After day " + (day + 1) + ": " + freq);
     }
 
     int total = 0;
