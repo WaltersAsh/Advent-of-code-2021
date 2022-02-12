@@ -33,8 +33,15 @@ int * readInputs() {
 
 int process(int *inputs) {
     int c = 0;
-    for (int i = 1; i < SIZE; i++) {
-        if (inputs[i - 1] < inputs[i]) {
+    int *windows;
+    windows = (int *) malloc(SIZE * sizeof(int));
+
+    for (int i = 2; i < SIZE; i++) {
+        windows[i] = inputs[i - 2] + inputs[i - 1] + inputs[i];
+    }
+
+    for (int i = 1; i < SIZE - 1; i++) {
+        if (windows[i - 1 ] < windows[i]) {
             c++;
         }
     }
@@ -42,10 +49,9 @@ int process(int *inputs) {
     return c;
 }
 
-//gcc part1.c -o part1
+//gcc part2.c -o part2
 int main(void) {
     printf("Answer is: %d\n", process(readInputs()));
 
     return 0;
 }
-
