@@ -3,10 +3,13 @@ package Day9;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Part1 {
   int[][] heights = new int[100][100];
+  List<Integer> lowPoints = new ArrayList<>();
 
   public void readData() throws IOException {
     BufferedReader br = new BufferedReader(new FileReader("inputs/day-nine-input.txt"));
@@ -36,104 +39,45 @@ public class Part1 {
     };
   }
 
-  public boolean checkAdjacentCells(int row, int col, String pos) {
-    int current = heights[row][col];
-
-    int below = -1;
-    int above = -1;
-    int rightside = -1;
-    int leftside = -1;
-
-    try {
-      below = heights[row + 1][col];
-    } catch (ArrayIndexOutOfBoundsException ignore) {
-    }
-    try {
-      above = heights[row - 1][col];
-    } catch (ArrayIndexOutOfBoundsException ignore) {
-    }
-    try {
-      rightside = heights[row][col + 1];
-    } catch (ArrayIndexOutOfBoundsException ignore) {
-    }
-    try {
-      leftside = heights[row][col - 1];
-    } catch (ArrayIndexOutOfBoundsException ignore) {
-    }
-
-    switch (pos) {
-      case "TL":
-        return current < below && current < rightside;
-
-      case "TR":
-        return current < leftside && current < below;
-
-      case "BL":
-        return current < above && current < rightside;
-
-      case "BR":
-        return current < leftside && current < above;
-
-      case "TM":
-        return current < below && current < leftside && current < rightside;
-
-      case "BM":
-        return current < above && current < leftside && current < rightside;
-
-      default:
-        return current < above && current < below && current < rightside && current < leftside;
-    }
-  }
-
   public void process() {
-    int riskLvls = 0;
-
     for (int row = 0; row < heights.length; row++) {
       for (int col = 0; col < heights[row].length; col++) {
 
+        int below = 10;
+        int above = 10;
+        int rightside = 10;
+        int leftside = 10;
         int current = heights[row][col];
 
-        if (row == 0) {
-          if (col == 0) {
-            if (checkAdjacentCells(row, col, "TL")) {
-              riskLvls += current + 1;
-            }
+        try {
+          above = heights[row - 1][col];
+        } catch (ArrayIndexOutOfBoundsException ignore) {
+        }
+        try {
+          below = heights[row + 1][col];
+        } catch (ArrayIndexOutOfBoundsException ignore) {
+        }
+        try {
+          rightside = heights[row][col + 1];
+        } catch (ArrayIndexOutOfBoundsException ignore) {
+        }
+        try {
+          leftside = heights[row][col - 1];
+        } catch (ArrayIndexOutOfBoundsException ignore) {
+        }
 
-          } else if (col == heights[row].length - 1) {
-            if (checkAdjacentCells(row, col, "TR")) {
-              riskLvls += current + 1;
-            }
-
-          } else {
-            if (checkAdjacentCells(row, col, "TM")) {
-              riskLvls += current + 1;
-            }
-          }
-        } else if (row == heights.length - 1) {
-          if (col == 0) {
-            if (checkAdjacentCells(row, col, "BL")) {
-              riskLvls += current + 1;
-            }
-
-          } else if (col == heights[row].length - 1) {
-            if (checkAdjacentCells(row, col, "BR")) {
-              riskLvls += current + 1;
-            }
-
-          } else {
-            if (checkAdjacentCells(row, col, "BM")) {
-              riskLvls += current + 1;
-            }
-          }
-        } else {
-          if (checkAdjacentCells(row, col, "wub")) {
-            riskLvls += current + 1;
-          }
+        if (current < above && current < below && current < rightside && current < leftside) {
+          System.out.println(current);
+          lowPoints.add(current + 1);
         }
       }
-      //System.out.println(riskLvls);
     }
-    System.out.println("\nSum of risk levels of all low points: " + riskLvls);
+
+    int sum = 0;
+    for (int lowPoint : lowPoints) {
+      sum += lowPoint;
+    }
+    System.out.println("Low point risk levels sum: " + sum);
   }
 
   public static void main(String[] args) throws IOException {
@@ -142,5 +86,4 @@ public class Part1 {
     //chall.test();
     chall.process();
   }
-
 }
