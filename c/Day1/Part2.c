@@ -22,12 +22,6 @@ int * readInputs() {
     }
     fclose(fp);
 
-      /*
-    for (int i = 0; i < 2000; i++) {
-        printf("%d\n", inputs[i]);
-    }
-    */
-
     return inputs;
 }
 
